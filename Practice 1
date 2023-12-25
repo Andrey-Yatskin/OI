@@ -1,0 +1,38 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io
+from PIL import Image, ImageFilter, ImageOps
+
+def apply_black_white_filter(image):
+    # Применяем черно-белый фильтр
+    black_white_image = ImageOps.grayscale(image)
+    return black_white_image
+
+image_height = 600
+image_width = 800
+dpi = 1000
+
+urls = [
+    f"https://placekitten.com/{image_width}/{image_height}"
+]
+
+for url in urls:
+    image = io.imread(url)
+    pil_image = Image.fromarray(image)
+
+    # Переворот изображения на 180 градусов
+    rotated_image = pil_image.rotate(180)
+
+    black_white = apply_black_white_filter(rotated_image)
+
+    # Преобразуем обратно в формат np.array для imshow
+    black_white = np.array(black_white)
+    rotated = np.array(rotated_image)
+
+    # Визуализируем преобразованное изображение
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    ax.imshow(black_white, cmap='gray')
+  
+
+    plt.show()
